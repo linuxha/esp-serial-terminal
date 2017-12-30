@@ -1,6 +1,5 @@
 # esp-serial-terminal
-==========================
-This is a fork and translation of Dima-Ch's [ESP-Serial-Terminal](https://github.com/dima-ch/esp-serial-terminal).
+This is a fork and translation of Dima-Ch's [ESP-Serial-Terminal](https://github.com/dima-ch/esp-serial-terminal). I intend to use this code as the basis for a few projects I'm working on with the ESP-01 and ESP-12.
 
 ESP8266 WiFi - RS232 bridge. An additional function is relay control. Applicable for shorting the contacts of the PC power button.
 Designed to implement a remote terminal for a home server. Allows you to work with the system before loading network interfaces and the possibility of using SSH / VNC.
