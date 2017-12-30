@@ -1,53 +1,57 @@
 esp-serial-terminal
 ==========================
-ESP8266 WiFi - RS232 мост. Дополнительная функция - управление реле. Применимо для замыкания контактов кнопки питания ПК.
-Разработано для реализации удаленного терминала для домашнего сервера. Позволяет работать с системой до загрузки сетевых интерфейсов и возможности использования SSH/VNC. 
-Например, управление grub, ввод пароля от зашифрованного корневого раздела, решение проблем отказа монтирования ФС, или просто ttyS консоль.
+This is a fork and translation of Dima-Ch's ESP-Serial-Terminal (https://github.com/dima-ch/esp-serial-terminal).
 
-Прошивка форкнута от [ESP8266-transparent-bridge project](https://github.com/beckdac/ESP8266-transparent-bridge).
-Использовалась ESP8266 KiCAD библиотека [techinc-kicad-lib](https://github.com/techinc/techinc-kicad-lib).
+ESP8266 WiFi - RS232 bridge. An additional function is relay control. Applicable for shorting the contacts of the PC power button.
+Designed to implement a remote terminal for a home server. Allows you to work with the system before loading network interfaces and the possibility of using SSH / VNC.
 
-Собранная прошивка в [релизах] (https://github.com/dima-ch/esp-serial-terminal/releases).
+For example, managing grub, entering the password from the encrypted root partition, solving the problems of mounting FS failure, or simply ttyS console.
 
-#Аппаратная часть
-На текущий момент аппаратная часть доступна для модуля ESP8266 ESP-03. Схема и печатная плата в формате KiCAD лежат в каталоге schematic. GPIO2 модуля подключен к светодиоду индикации.
-GPIO14 подключен к реле. Выбран GPIO14 поскльку логический уровень на нем не прыгает при включение ESP8266.
+The firmware is forged from [ESP8266-transparent-bridge project] (https://github.com/beckdac/ESP8266-transparent-bridge).
+We used the ESP8266 KiCAD library [techinc-kicad-lib] (https://github.com/techinc/techinc-kicad-lib).
 
-#Индикация
-* Светодиод моргает  во время работы
-* Когда подключен клиент светодиод моргает медленнее
+The assembled firmware in [releases] (https://github.com/dima-ch/esp-serial-terminal/releases).
 
-Подключение удобно производить клиентами telnet. 
-ConnectBot для Android работает с настройками по умолчанию, утилита Linux telnet требует переменной окружения export TERM=VT100, параметра -8 и выполнения после подключения ^]mode character.
+# Hardware
+Currently, the hardware is available for the ESP8266 ESP-03. The circuit and the printed circuit board in KiCAD format are in the schematic directory. The GPIO2 module is connected to the indication LED.
+GPIO14 is connected to the relay. The GPIO14 is selected because the logic level on it does not jump when the ESP8266 is turned on.
 
-#Конфигурация
-Следует убедиться, что в коде установлен #define CONFIG_DYNAMIC
+# Indication
+* LED blinks during operation
+* When the client is connected, the LED blinks more slowly
 
-Конфигурационные и управляющие AT команды
+Connectivity is conveniently done by telnet clients.
+ConnectBot for Android works with the default settings, the Linux telnet utility requires the environment variable export TERM = VT100, the -8 option and execution after connecting the ^] mode character.
+
+# Configuration
+Make sure that the code is set to #define CONFIG_DYNAMIC
+
+Configuration and control AT commands
+
 ```
-+++AT                                    # вывод в ответ OK
-+++AT PWBTN <duration: SHORT, LONG, HARDRESET>
-										 # Управление контактами реле: SHORT - замыкание на 0.5с, LONG - на 4с, HARDRESET - 4c, пауза в 1c, затем 0.5с
-+++AT MODE                               # вывод текущего режима
-+++AT MODE <mode: 1= STA, 2= AP, 3=both> # установка режима
-+++AT STA                                # вывести текущий ssid и пароль подключения к точке доступа
-+++AT STA <ssid> <password>              # установить ssid и пароль к точке доступа
-+++AT AP                                 # вывести текущие настройки точки доступа
-+++AT AP <ssid>                          # установить режим открытой точки доступа с указанным ssid
-+++AT AP <ssid> <pw> [<authmode> [hide-ssid [<ch>]]]]
-										 # установить параметры точки доступа, authmode:1= WEP,2= WPA,3= WPA2,4= WPA+WPA2, 
-										 # hide-ssid:1-hide, 0-show(not hide), channel: 1..13
-+++AT BAUD                               # вывести текущие настройки UART
-+++AT BAUD <baud> [data [parity [stop]]] # установить битрейт и опционально data bits = 5/6/7/8 , parity = N/E/O, stop bits = 1/1.5/2
-+++AT PORT                               # вывести текущей TCP порт
-+++AT PORT <port>                        # установить TCP порт (перезагрузка)
-+++AT FLASH                              # вывод настроек сохранения
-+++AT FLASH <1|0>                        # 1: изменение настроек UART (++AT BAUD ...) сохраняется (по умолчанию), 0: изменения не сохраняются
-+++AT RESET                              # программная перезагрузка
++++ AT # output in response to OK
++++ AT PWBTN <duration: SHORT, LONG, HARDRESET>
+# Relay contacts management: SHORT - closure by 0.5s, LONG - by 4s, HARDRESET - 4c, pause in 1c, then 0.5s
++++ AT MODE # output the current mode
++++ AT MODE <mode: 1 = STA, 2 = AP, 3 = both> # set the mode
++++ AT STA # display the current ssid and connection password for the access point
++++ AT STA <ssid> <password> # set ssid and password for access point
++++ AP AT # display the current access point settings
++++ AT AP <ssid> # set the mode of the open access point with the specified ssid
++++ AT AP <ssid> <pw> [<authmode> [hide-ssid [<ch>]]]]
+# set the access point parameters, authmode: 1 = WEP, 2 = WPA, 3 = WPA2,4 = WPA + WPA2,										 # hide-ssid:1-hide, 0-show(not hide), channel: 1..13
++++ AT BAUD # display the current UART settings
++++ AT BAUD <baud> [data [parity [stop]]] # set bitrate and optionally data bits = 5/6/7/8, parity = N / E / O, stop bits = 1 / 1.5 / 2
++++ AT PORT # display the current TCP port
++++ AT PORT <port> # set the TCP port (reboot)
++++ AT FLASH # output save settings
++++ AT FLASH <1 | 0> # 1: changing the UART settings (++ AT BAUD ...) is saved (by default), 0: changes are not saved
++++ AT RESET # software reset
 ```
-В случае успеха все команды возвращают "OK" или соответствующий вывод. На заметку, пароль и ssid не могут содержать пробелов.
+If successful, all commands return "OK" or the corresponding output. Note that the password and ssid can not contain spaces.
 
-Пример конфигурирования. telnet используется без ключей и настроек в отличие от режима работы. Если нет ответа на команду +++AT при ручном вводе, рекомендую вставлять команду в терминал из буфера обмена.
+An example of configuration. telnet is used without keys and settings, unlike the mode of operation. If there is no response to the +++ AT command with manual input, I recommend inserting a command into the terminal from the clipboard.
+
 ```
 user@host:~$ telnet 192.168.1.197
 Trying 192.168.1.197...
@@ -74,17 +78,16 @@ OK
 telnet> c
 Connection closed.
 ```
-
-Прошивка:
+Firmware:
 ```
 esptool.py --port /dev/ttyXXX write_flash 0x00000 0x00000.bin 0x40000 0x40000.bin
-...
-или с использованием ESP8266Flasher.exe из https://github.com/nodemcu/nodemcu-flasher с
-0x00000.bin по адресу 0x00000
-0x40000.bin по адресу 0x40000
+```
+or using ESP8266Flasher.exe from https://github.com/nodemcu/nodemcuflasher with
+0x00000.bin at 0x00000
+0x40000.bin at 0x40000
 
-Дополнительно см. [ESP8266-transparent-bridge project](https://github.com/beckdac/ESP8266-transparent-bridge)
+For more information, see [ESP8266-transparent-bridge project] (https://github.com/beckdac/ESP8266-transparent-bridge)
+# TODO
 
-#TODO
-* ошибка на печатной плате и схеме, перепутаны пины DB9
-* уменьшение клиентов до 2 и увеличение буфера отправки
+* an error on the PCB and the circuit, the DB9 pins are reversed
+* Reduce clients to 2 and increase the send buffer
