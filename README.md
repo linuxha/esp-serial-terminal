@@ -1,29 +1,29 @@
-esp-serial-terminal
+# esp-serial-terminal
 ==========================
-This is a fork and translation of Dima-Ch's ESP-Serial-Terminal (https://github.com/dima-ch/esp-serial-terminal).
+This is a fork and translation of Dima-Ch's [ESP-Serial-Terminal](https://github.com/dima-ch/esp-serial-terminal).
 
 ESP8266 WiFi - RS232 bridge. An additional function is relay control. Applicable for shorting the contacts of the PC power button.
 Designed to implement a remote terminal for a home server. Allows you to work with the system before loading network interfaces and the possibility of using SSH / VNC.
 
 For example, managing grub, entering the password from the encrypted root partition, solving the problems of mounting FS failure, or simply ttyS console.
 
-The firmware is forged from [ESP8266-transparent-bridge project] (https://github.com/beckdac/ESP8266-transparent-bridge).
-We used the ESP8266 KiCAD library [techinc-kicad-lib] (https://github.com/techinc/techinc-kicad-lib).
+The firmware is based on the firmware found at [ESP8266-transparent-bridge project](https://github.com/beckdac/ESP8266-transparent-bridge).
+We used the ESP8266 KiCAD library [techinc-kicad-lib](https://github.com/techinc/techinc-kicad-lib).
 
-The assembled firmware in [releases] (https://github.com/dima-ch/esp-serial-terminal/releases).
+The assembled firmware in [releases](https://github.com/dima-ch/esp-serial-terminal/releases).
 
-# Hardware
+## Hardware
 Currently, the hardware is available for the ESP8266 ESP-03. The circuit and the printed circuit board in KiCAD format are in the schematic directory. The GPIO2 module is connected to the indication LED.
 GPIO14 is connected to the relay. The GPIO14 is selected because the logic level on it does not jump when the ESP8266 is turned on.
 
-# Indication
+## Indication
 * LED blinks during operation
 * When the client is connected, the LED blinks more slowly
 
 Connectivity is conveniently done by telnet clients.
 ConnectBot for Android works with the default settings, the Linux telnet utility requires the environment variable export TERM = VT100, the -8 option and execution after connecting the ^] mode character.
 
-# Configuration
+## Configuration
 Make sure that the code is set to #define CONFIG_DYNAMIC
 
 Configuration and control AT commands
@@ -86,8 +86,9 @@ or using ESP8266Flasher.exe from https://github.com/nodemcu/nodemcuflasher with
 0x00000.bin at 0x00000
 0x40000.bin at 0x40000
 
-For more information, see [ESP8266-transparent-bridge project] (https://github.com/beckdac/ESP8266-transparent-bridge)
-# TODO
+For more information, see the [ESP8266-transparent-bridge project](https://github.com/beckdac/ESP8266-transparent-bridge)
+
+## TODO
 
 * an error on the PCB and the circuit, the DB9 pins are reversed
 * Reduce clients to 2 and increase the send buffer
